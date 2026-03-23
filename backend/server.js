@@ -10,7 +10,7 @@ app.use(express.json());
 app.use("/api/files", fileRoutes);
 
 app.get("/", (req, res) => {
-  res.json({ message: "Cloud Storage API is running!" });
+  res.json({ message: "VaultX API is running!" });
 });
 
 const PORT = process.env.PORT || 3000;

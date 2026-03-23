@@ -57,7 +57,7 @@ router.get("/", async (req, res) => {
 });
 
 //Download feature
-router.get("/download/:key(*)", async (req, res) => {
+router.get("/download/*key", async (req, res) => {
   try {
     const url = await getSignedUrl(
       s3,
@@ -75,13 +75,15 @@ router.get("/download/:key(*)", async (req, res) => {
 });
 
 //Share file (aws signed url ke thru)
-router.get("/share/:key(*)", async (req, res) => {
+
+
+router.get("/share/*key", async (req, res) => {
   try {
     const url = await getSignedUrl(
       s3,
       new GetObjectCommand({
         Bucket: BUCKET,
-        Key: req.params.key,
+        Key: req.params[0],
       }),
       { expiresIn: 86400 } //24 hours
     );
@@ -92,7 +94,7 @@ router.get("/share/:key(*)", async (req, res) => {
 });
 
 //File deletion
-router.delete("/:key(*)", async (req, res) => {
+router.delete("/*key", async (req, res) => {
   try {
     await s3.send(new DeleteObjectCommand({
       Bucket: BUCKET,
