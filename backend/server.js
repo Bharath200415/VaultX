@@ -4,7 +4,10 @@ const cors = require("cors");
 const fileRoutes = require("./routes/files");
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST", "DELETE"],
+}));
 app.use(express.json());
 
 app.use("/api/files", fileRoutes);

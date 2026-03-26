@@ -56,15 +56,20 @@ router.get("/", async (req, res) => {
   }
 });
 
-//Download feature
+// Download
 router.get("/download/*key", async (req, res) => {
   try {
+    const raw = Array.isArray(req.params.key)
+      ? req.params.key.join("/")
+      : req.params.key ?? req.params[0];
+    const key = decodeURIComponent(raw);
+    console.log("Download key:", key);
     const url = await getSignedUrl(
       s3,
       new GetObjectCommand({
         Bucket: BUCKET,
-        Key: req.params.key,
-        ResponseContentDisposition: `attachment; filename="${req.params.key.split("/").pop()}"`,
+        Key: key,
+        ResponseContentDisposition: `attachment; filename="${key.split("/").pop()}"`,
       }),
       { expiresIn: 3600 }
     );
@@ -74,18 +79,21 @@ router.get("/download/*key", async (req, res) => {
   }
 });
 
-//Share file (aws signed url ke thru)
-
-
+// Share
 router.get("/share/*key", async (req, res) => {
   try {
+    const raw = Array.isArray(req.params.key)
+      ? req.params.key.join("/")
+      : req.params.key ?? req.params[0];
+    const key = decodeURIComponent(raw);
+    console.log("Share key:", key);
     const url = await getSignedUrl(
       s3,
       new GetObjectCommand({
         Bucket: BUCKET,
-        Key: req.params[0],
+        Key: key,
       }),
-      { expiresIn: 86400 } //24 hours
+      { expiresIn: 86400 }
     );
     res.json({ url });
   } catch (err) {
@@ -93,12 +101,17 @@ router.get("/share/*key", async (req, res) => {
   }
 });
 
-//File deletion
+// Delete
 router.delete("/*key", async (req, res) => {
   try {
+    const raw = Array.isArray(req.params.key)
+      ? req.params.key.join("/")
+      : req.params.key ?? req.params[0];
+    const key = decodeURIComponent(raw);
+    console.log("Delete key:", key);
     await s3.send(new DeleteObjectCommand({
       Bucket: BUCKET,
-      Key: req.params.key,
+      Key: key,
     }));
     res.json({ message: "File deleted successfully!" });
   } catch (err) {
