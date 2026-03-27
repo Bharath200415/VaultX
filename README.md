@@ -2,6 +2,7 @@
 ### A Cloud Storage Solution Powered by AWS S3
 
 **VaultX** is a modern, responsive mini cloud storage application designed to demonstrate the power of **AWS S3** integration. Inspired by Google Drive, it allows users to upload, manage, download, and share files securely through a sleek web interface.
+<img width="1919" height="937" alt="image" src="https://github.com/user-attachments/assets/14d27677-5f1b-4edb-a5c1-25e987567c95" />
 
 ---
 
