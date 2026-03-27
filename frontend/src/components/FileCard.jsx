@@ -9,13 +9,23 @@ export default function FileCard({ file, onDelete }) {
     window.open(res.data.url, "_blank");
   };
 
-  const handleShare = async () => {
-    console.log("File object:", file);        
-    console.log("File key:", file.key); 
-    const res = await shareFile(file.key);
-    await navigator.clipboard.writeText(res.data.url);
+const handleShare = async () => {
+  const res = await shareFile(file.key);
+  const url = res.data.url;
+
+  try {
+    await navigator.clipboard.writeText(url);
     alert("Share link copied! Valid for 24 hours.");
-  };
+  } catch {
+    const el = document.createElement("textarea");
+    el.value = url;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand("copy");
+    document.body.removeChild(el);
+    alert("Share link copied! Valid for 24 hours.");
+  }
+};
 
   const handleDelete = async () => {
     if (!window.confirm(`Delete ${file.name}?`)) return;
