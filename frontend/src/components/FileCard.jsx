@@ -11,22 +11,9 @@ export default function FileCard({ file, onDelete }) {
 
 const handleShare = async () => {
   const res = await shareFile(file.key);
-  const url = res.data.url;
-
-  try {
-    await navigator.clipboard.writeText(url);
-    alert("Share link copied! Valid for 24 hours.");
-  } catch {
-    const el = document.createElement("textarea");
-    el.value = url;
-    document.body.appendChild(el);
-    el.select();
-    document.execCommand("copy");
-    document.body.removeChild(el);
-    alert("Share link copied! Valid for 24 hours.");
-  }
+  await navigator.clipboard.writeText(res.data.url);
+  alert("Share link copied! Valid for 24 hours.");
 };
-
   const handleDelete = async () => {
     if (!window.confirm(`Delete ${file.name}?`)) return;
     await deleteFile(file.key);
