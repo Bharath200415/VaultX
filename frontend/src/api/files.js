@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:3000/api" });
+const API = axios.create({ baseURL: "/api" });
 
 export const uploadFile = (formData, onProgress) =>
   API.post("/files/upload", formData, {
